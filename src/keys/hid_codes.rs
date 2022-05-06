@@ -1,15 +1,16 @@
+#![allow(dead_code)]
 /**
  * Modifier masks - used for the first byte in the HID report.
  * NOTE: The second byte in the report is reserved, 0x00
  */
-const KEY_MOD_LCTRL: u8 = 0x01;
-const KEY_MOD_LSHIFT: u8 = 0x02;
-const KEY_MOD_LALT: u8 = 0x04;
-const KEY_MOD_LMETA: u8 = 0x08;
-const KEY_MOD_RCTRL: u8 = 0x10;
-const KEY_MOD_RSHIFT: u8 = 0x20;
-const KEY_MOD_RALT: u8 = 0x40;
-const KEY_MOD_RMETA: u8 = 0x80;
+pub const KEY_MOD_LCTRL: u8 = 0x01;
+pub const KEY_MOD_LSHIFT: u8 = 0x02;
+pub const KEY_MOD_LALT: u8 = 0x04;
+pub const KEY_MOD_LMETA: u8 = 0x08;
+pub const KEY_MOD_RCTRL: u8 = 0x10;
+pub const KEY_MOD_RSHIFT: u8 = 0x20;
+pub const KEY_MOD_RALT: u8 = 0x40;
+pub const KEY_MOD_RMETA: u8 = 0x80;
 
 /**
  * Scan codes - last N slots in the HID report (usually 6).
@@ -19,36 +20,36 @@ const KEY_MOD_RMETA: u8 = 0x80;
  * KEY_ERR_OVF in all slots to indicate this condition.
  */
 
-const KEY_NONE: u8 = 0x00; // No key pressed
-const KEY_ERR_OVF: u8 = 0x01; //  Keyboard Error Roll Over - used for all slots if too many keys are pressed ("Phantom key")
-                              // 0x02 //  Keyboard POST Fail
-                              // 0x03 //  Keyboard Error Undefined
-const KEY_A: u8 = 0x04; // Keyboard a and A
-const KEY_B: u8 = 0x05; // Keyboard b and B
-const KEY_C: u8 = 0x06; // Keyboard c and C
-const KEY_D: u8 = 0x07; // Keyboard d and D
-const KEY_E: u8 = 0x08; // Keyboard e and E
-const KEY_F: u8 = 0x09; // Keyboard f and F
-const KEY_G: u8 = 0x0a; // Keyboard g and G
-const KEY_H: u8 = 0x0b; // Keyboard h and H
-const KEY_I: u8 = 0x0c; // Keyboard i and I
-const KEY_J: u8 = 0x0d; // Keyboard j and J
-const KEY_K: u8 = 0x0e; // Keyboard k and K
-const KEY_L: u8 = 0x0f; // Keyboard l and L
-const KEY_M: u8 = 0x10; // Keyboard m and M
-const KEY_N: u8 = 0x11; // Keyboard n and N
-const KEY_O: u8 = 0x12; // Keyboard o and O
-const KEY_P: u8 = 0x13; // Keyboard p and P
-const KEY_Q: u8 = 0x14; // Keyboard q and Q
-const KEY_R: u8 = 0x15; // Keyboard r and R
-const KEY_S: u8 = 0x16; // Keyboard s and S
-const KEY_T: u8 = 0x17; // Keyboard t and T
-const KEY_U: u8 = 0x18; // Keyboard u and U
-const KEY_V: u8 = 0x19; // Keyboard v and V
-const KEY_W: u8 = 0x1a; // Keyboard w and W
-const KEY_X: u8 = 0x1b; // Keyboard x and X
-const KEY_Y: u8 = 0x1c; // Keyboard y and Y
-const KEY_Z: u8 = 0x1d; // Keyboard z and Z
+pub const KEY_NONE: u8 = 0x00; // No key pressed
+pub const KEY_ERR_OVF: u8 = 0x01; //  Keyboard Error Roll Over - used for all slots if too many keys are pressed ("Phantom key")
+                                  // 0x02 //  Keyboard POST Fail
+                                  // 0x03 //  Keyboard Error Undefined
+pub const KEY_A: u8 = 0x04; // Keyboard a and A
+pub const KEY_B: u8 = 0x05; // Keyboard b and B
+pub const KEY_C: u8 = 0x06; // Keyboard c and C
+pub const KEY_D: u8 = 0x07; // Keyboard d and D
+pub const KEY_E: u8 = 0x08; // Keyboard e and E
+pub const KEY_F: u8 = 0x09; // Keyboard f and F
+pub const KEY_G: u8 = 0x0a; // Keyboard g and G
+pub const KEY_H: u8 = 0x0b; // Keyboard h and H
+pub const KEY_I: u8 = 0x0c; // Keyboard i and I
+pub const KEY_J: u8 = 0x0d; // Keyboard j and J
+pub const KEY_K: u8 = 0x0e; // Keyboard k and K
+pub const KEY_L: u8 = 0x0f; // Keyboard l and L
+pub const KEY_M: u8 = 0x10; // Keyboard m and M
+pub const KEY_N: u8 = 0x11; // Keyboard n and N
+pub const KEY_O: u8 = 0x12; // Keyboard o and O
+pub const KEY_P: u8 = 0x13; // Keyboard p and P
+pub const KEY_Q: u8 = 0x14; // Keyboard q and Q
+pub const KEY_R: u8 = 0x15; // Keyboard r and R
+pub const KEY_S: u8 = 0x16; // Keyboard s and S
+pub const KEY_T: u8 = 0x17; // Keyboard t and T
+pub const KEY_U: u8 = 0x18; // Keyboard u and U
+pub const KEY_V: u8 = 0x19; // Keyboard v and V
+pub const KEY_W: u8 = 0x1a; // Keyboard w and W
+pub const KEY_X: u8 = 0x1b; // Keyboard x and X
+pub const KEY_Y: u8 = 0x1c; // Keyboard y and Y
+pub const KEY_Z: u8 = 0x1d; // Keyboard z and Z
 
 const KEY_1: u8 = 0x1e; // Keyboard 1 and !
 const KEY_2: u8 = 0x1f; // Keyboard 2 and @
