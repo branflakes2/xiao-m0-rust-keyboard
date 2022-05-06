@@ -2,6 +2,7 @@
 #![no_main]
 
 extern crate panic_halt;
+mod keys;
 
 use cortex_m::{asm::delay as asm_delay, interrupt::free as disable_interrupts, peripheral::NVIC};
 use hal::{clock::GenericClockController, prelude::*, usb::UsbBus};
