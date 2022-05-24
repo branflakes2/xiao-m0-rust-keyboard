@@ -2,6 +2,7 @@ use usbd_hid::descriptor::KeyboardReport;
 
 pub struct HidManager {
     modifier: u8,
+    hid_tracker: [[u8; 8]; 16],
     keys: [u8; 6],
 }
 
@@ -9,24 +10,30 @@ impl HidManager {
     pub fn new() -> Self {
         return HidManager {
             modifier: 0,
+            hid_tracker: [[0; 8]; 16],
             keys: [0, 0, 0, 0, 0, 0],
         };
     }
 
-    pub fn press_key(mut self, key: u8) {
-        if key > 0 {
-            for i in 0..5 {
-                if self.keys[i] == key {
-                    return;
-                }
-                if self.keys[i] == 0 {
-                    self.keys[i] = key;
-                }
+    pub fn press_key(&mut self, column: usize, row: usize, key: u8) {
+        if column > 15 || row > 7 || key == 0 {
+            return;
+        }
+        self.hid_tracker[column][row] = key;
+        if key == 0 {
+            return;
+        }
+        for i in 0..5 {
+            if self.keys[i] == key {
+                return;
+            }
+            if self.keys[i] == 0 {
+                self.keys[i] = key;
             }
         }
     }
 
-    pub fn release_key(mut self, key: u8) {
+    fn _release_key(mut self, key: u8) {
         if key > 0 {
             for i in 0..5 {
                 if self.keys[i] == key {
@@ -36,6 +43,17 @@ impl HidManager {
                 }
             }
         }
+    }
+
+    pub fn release_key(mut self, column: usize, row: usize) {
+        if column > 15 || row > 7 {
+            return;
+        }
+        let hid_code = self.hid_tracker[column][row];
+        if hid_code == 0 {
+            return;
+        }
+        self._release_key(hid_code);
     }
 
     pub fn press_modifier(mut self, m: u8) {

@@ -2,8 +2,7 @@
 #![no_main]
 
 extern crate panic_halt;
-mod hid;
-mod layout;
+mod keyboard;
 
 use cortex_m::{asm::delay as asm_delay, interrupt::free as disable_interrupts, peripheral::NVIC};
 use hal::{
@@ -30,7 +29,6 @@ use bsp::{
     Uart,
 };
 
-use hid::HidManager;
 use shared_bus;
 use xiao_m0 as bsp;
 
@@ -148,7 +146,7 @@ fn main() -> ! {
     //let keymap: [u8; 8] = [0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25];
     let mut hid_manager = HidManager::new();
     loop {
-        let mut keys: [u8; 6] = [0, 0, 0, 0, 0, 0];
+        let keys: [u8; 6] = [0, 0, 0, 0, 0, 0];
         for n in columns {
             if n > 7 {
                 continue;
