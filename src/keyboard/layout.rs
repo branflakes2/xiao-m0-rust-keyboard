@@ -40,7 +40,8 @@ impl<'a> Layout<'a> {
         self.current_layer = self.layer_keys[0][2];
     }
 
-    pub fn keys_to_hids(
+    // I have no idea what this is supposed to return...
+    pub fn keys_to_keystrokes(
         mut self,
         column: usize,
         raised_keys: [usize; 8],
@@ -57,8 +58,20 @@ impl<'a> Layout<'a> {
                 break;
             }
             let stroke = self.layers[self.current_layer][column][key];
+
+            // This method only handles layer keys - the keyboard struct handles raised normal keys
             if stroke.is_layer {
                 self.release_layer_key(column, key)
+            }
+        }
+
+        for key in lowered_keys {
+            if key > 7 {
+                break;
+            }
+            let stroke = self.layers[self.current_layer][column][key];
+            if stroke.is_layer {
+                self.press_layer_key(column, key, stroke)
             } else {
             }
         }
