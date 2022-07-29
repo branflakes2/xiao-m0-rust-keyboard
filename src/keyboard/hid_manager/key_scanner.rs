@@ -27,11 +27,11 @@ impl KeyTracker {
             self.pressed_keys[section][col][row] = key;
             if key.is_layer {
                 if key.toggle {
-                    self.default_layer = kay.layer;
+                    self.default_layer = key.layer;
                 } else {
                     self.current_layer = key.layer;
                     self.pressed_layers.rotate_right(1);
-                    self.pressed_layers[0] = key.layer;
+                    self.pressed_layers[0] = key.layer as u8;
                 }
             } else {
                 return key;
@@ -53,7 +53,7 @@ impl KeyTracker {
                             for j in i..layout::LAYOUT.len() - 2 {
                                 self.pressed_layers[j] = self.pressed_layers[j + 1];
                             }
-                            self.pressed_layers[pressed_layers.len() - 1] = 0xFF;
+                            self.pressed_layers[self.pressed_layers.len() - 1] = 0xFF;
                             break;
                         }
                     }
@@ -68,17 +68,17 @@ impl KeyTracker {
 
     pub fn process_column(
         &mut self,
-        section: u8,
+        section: usize,
         column: layout::Column,
-        column_number: u8,
-    ) -> [[keys::KeyStroke; usize(layout::SECTION_ROWS)]; 2] {
-        let mut hids = [[keys::NONE; usize(layout::SECTION_ROWS)]; 2];
+        column_number: usize,
+    ) -> [[keys::KeyStroke; layout::SECTION_ROWS]; 2] {
+        let mut hids = [[keys::NONE; layout::SECTION_ROWS]; 2];
         if section >= layout::N_SECTIONS || row >= layout::SECTION_ROWS {
             return hids;
         }
         for row in 0..layout::SECTION_ROWS - 1 {
-            if (0x1 << row) & column {
-                if self.pressed_keys[section][column_number][row] == keys::NONE {
+            if (0x1 << row) & column > 0 {
+                if self.pressed_keys[section][column_number][row].eq(keys::NONE) {
                     hids[0][i] = self._press_key(section, column_number, row);
                 }
             } else {

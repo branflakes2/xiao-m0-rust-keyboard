@@ -18,16 +18,16 @@ pub trait ReportSender {
 pub struct Keyboard<'a> {
     hid: HidManager,
     tracker: KeyTracker,
-    reader: &'a ColumnReader,
-    sender: &'a ReportSender,
+    reader: &'a dyn ColumnReader,
+    sender: &'a dyn ReportSender,
 }
 
-impl Keyboard<'a> {
+impl<'a> Keyboard<'a> {
     pub fn new(
         hid: HidManager,
         tracker: KeyTracker,
-        reader: &'a ColumnReader,
-        sender: &'a ReportSender,
+        reader: &'a impl ColumnReader,
+        sender: &'a impl ReportSender,
     ) -> Self {
         return Keyboard {
             hid,
@@ -39,9 +39,9 @@ impl Keyboard<'a> {
 
     pub fn run_forever(mut self) {
         loop {
-            for section in layout::N_SECTIONS {
-                for column in layout::SECTION_COLS {
-                    let c = self.reader.read_column(section, column);
+            for section in 0..layout::N_SECTIONS {
+                for column in 0..layout::SECTION_COLS {
+                    let c = self.reader.read_column(section as u8, column as u8);
                     let strokes = self.tracker.process_column(section, c, column);
 
                     // press keys

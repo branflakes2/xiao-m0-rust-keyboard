@@ -4,7 +4,11 @@
 extern crate panic_halt;
 mod keyboard;
 
-use cortex_m::{asm::delay as asm_delay, interrupt::free as disable_interrupts, peripheral::NVIC};
+use cortex_m::{
+    //asm::delay as asm_delay,
+    interrupt::free as disable_interrupts,
+    peripheral::NVIC,
+};
 use hal::{clock::GenericClockController, prelude::*, time::KiloHertz, usb::UsbBus};
 use pac::{interrupt, CorePeripherals, Peripherals};
 use shared_bus;
@@ -14,25 +18,27 @@ use usbd_hid::{
     hid_class::HIDClass,
 };
 
-use bsp::{entry, hal, pac, Led0};
+use bsp::{entry, hal, pac};
 use keyboard::{
-    self,
+    //self,
     hid_manager::{
         key_scanner::{
-            self,
+            //self,
             layout::{self, Column},
             KeyTracker,
         },
         HidManager,
     },
-    ColumnReader, Keyboard, ReportSender,
+    ColumnReader,
+    Keyboard,
+    ReportSender,
 };
 use xiao_m0 as bsp;
 
 struct XiaoM0Sender {}
 
 impl ReportSender for XiaoM0Sender {
-    fn send_report(report: KeyboardReport) {
+    fn send_report(self, report: KeyboardReport) {
         disable_interrupts(|_| unsafe { USB_HID.as_mut().map(|hid| hid.push_input(&report)) });
     }
 }
@@ -41,17 +47,27 @@ struct XiaoM0ColumnReader<T> {
     i2c_bus: shared_bus::BusManagerSimple<T>,
 }
 
-impl ColumnReader for XiaoM0ColumnReader<T> {
+impl<
+        T: cortex_m::prelude::_embedded_hal_blocking_i2c_Write
+            + cortex_m::prelude::_embedded_hal_blocking_i2c_Read,
+    > ColumnReader for XiaoM0ColumnReader<T>
+{
     fn read_column(self, section: u8, column: u8) -> Column {
         if column > 7 {
-            return;
+            return 0;
         }
         let mut proxy = self.i2c_bus.acquire_i2c();
         let key: &mut [u8; 1] = &mut [0x00];
-        proxy.write(layout::SECTION_I2C_ADDRESSES[section], &[0x07, 0x00]);
-        proxy.write(layout::SECTION_I2C_ADDRESSES[section], &[0x03, 1 << column]);
-        proxy.write(layout::SECTION_I2C_ADDRESSES[section], &[0x00]);
-        proxy.read(layout::SECTION_I2C_ADDRESSES[section], key);
+        proxy.write(
+            layout::SECTION_I2C_ADDRESSES[section as usize],
+            &[0x07, 0x00],
+        );
+        proxy.write(
+            layout::SECTION_I2C_ADDRESSES[section as usize],
+            &[0x03, 1 << column],
+        );
+        proxy.write(layout::SECTION_I2C_ADDRESSES[section as usize], &[0x00]);
+        proxy.read(layout::SECTION_I2C_ADDRESSES[section as usize], key);
         return key[0];
     }
 }
@@ -90,7 +106,7 @@ fn main() -> ! {
     let mut sender = XiaoM0Sender {};
     let tracker = KeyTracker::new();
     let mut hid_manage = HidManager::new();
-    let mut keyboard = Keyboard::new(hid_manage, tracker, reader, sender);
+    let mut keyboard = Keyboard::new(hid_manage, tracker, &reader, &sender);
 
     unsafe {
         USB_HID = Some(HIDClass::new(bus_allocator, KeyboardReport::desc(), 60));
@@ -133,10 +149,12 @@ fn main() -> ! {
         .unwrap();
         asm_delay(15 * 1024 * 1024);
     }*/
-    keyboard.run_forever();
+    loop {
+        keyboard.run_forever();
+    }
 }
 
-fn push_keyboard_report(report: KeyboardReport) -> Result<usize, usb_device::UsbError> {}
+//fn push_keyboard_report(report: KeyboardReport) -> Result<usize, usb_device::UsbError> {}
 
 static mut USB_ALLOCATOR: Option<UsbBusAllocator<UsbBus>> = None;
 static mut USB_BUS: Option<UsbDevice<UsbBus>> = None;

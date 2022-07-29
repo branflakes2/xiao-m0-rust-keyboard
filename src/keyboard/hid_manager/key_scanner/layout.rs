@@ -3,16 +3,16 @@ pub mod keys;
 use keys::KeyStroke;
 
 // Number of physical sections of the keyboard, polled via i2c
-pub const N_SECTIONS: u8 = 2;
+pub const N_SECTIONS: usize = 2;
 
 // Used to allocate layers - TODO in a macro at some point to save space
-pub const SECTION_ROWS: u8 = 8;
-pub const SECTION_COLS: u8 = 8;
+pub const SECTION_ROWS: usize = 8;
+pub const SECTION_COLS: usize = 8;
 
 // I2C addresses of each section
-pub const SECTION_I2C_ADDRESSES: [u8; usize(N_SECTIONS)] = [0x27, 0x28];
+pub const SECTION_I2C_ADDRESSES: [u8; N_SECTIONS] = [0x27, 0x28];
 
-pub type Layer = [[[KeyStroke; usize(SECTION_ROWS)]; usize(SECTION_COLS)]; usize(N_SECTIONS)];
+pub type Layer = [[[KeyStroke; SECTION_ROWS]; SECTION_COLS]; N_SECTIONS];
 pub type Column = u8; // set this depending on the size that's read from
                       // io expander
 

@@ -70,10 +70,10 @@ impl HidManager {
         }
         if down {
             self.press_key(key.hid_code);
-            self.press_modifier(key.modifier);
+            self.press_modifier(key.modifiers);
         } else {
             self.release_key(key.hid_code);
-            self.release_modifier(key.modifier);
+            self.release_modifier(key.modifiers);
         }
     }
 }

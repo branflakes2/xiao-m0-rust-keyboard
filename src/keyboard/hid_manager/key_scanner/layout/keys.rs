@@ -9,6 +9,7 @@ mod hid_codes;
 ///is_layer: is this keystroke used to select a layer
 ///layer: which layer to select
 ///toggle: should the layer be toggled as the default, or only be active while the key is held
+#[derive(Copy, Clone)]
 pub struct KeyStroke {
     pub modifiers: u8,
     pub hid_code: u8,
@@ -17,6 +18,16 @@ pub struct KeyStroke {
     pub is_layer: bool,
     pub layer: usize,
     pub toggle: bool,
+}
+
+impl KeyStroke {
+    pub fn eq(self, other: KeyStroke) -> bool {
+        return self.modifiers == other.modifiers
+            && self.hid_code == other.hid_code
+            && self.is_layer == other.is_layer
+            && self.layer == other.layer
+            && self.toggle == other.toggle;
+    }
 }
 
 pub const NONE: KeyStroke = KeyStroke {
