@@ -50,9 +50,9 @@ struct XiaoM0ColumnReader<T> {
 impl<T: cortex_m::prelude::_embedded_hal_blocking_i2c_WriteRead> ColumnReader
     for XiaoM0ColumnReader<T>
 {
-    fn read_column(&self, section: u8, column: u8) -> Column {
+    fn read_column(&self, section: u8, column: u8) -> Option<Column> {
         if column > 7 {
-            return 0;
+            return None;
         }
         let mut proxy = self.i2c_bus.acquire_i2c();
         let key: &mut [u8; 1] = &mut [0x00];
@@ -62,9 +62,9 @@ impl<T: cortex_m::prelude::_embedded_hal_blocking_i2c_WriteRead> ColumnReader
             key,
         );
         if res.is_err() {
-            return 0;
+            return None;
         }
-        return key[0];
+        return Some(key[0]);
     }
 }
 
