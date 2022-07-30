@@ -8,24 +8,24 @@ use hid_manager::HidManager;
 use usbd_hid::descriptor::KeyboardReport;
 
 pub trait ColumnReader {
-    fn read_column(self, section: u8, column: u8) -> Column;
+    fn read_column(&self, section: u8, column: u8) -> Column;
 }
 
 pub trait ReportSender {
-    fn send_report(self, report: KeyboardReport);
+    fn send_report(&self, report: KeyboardReport);
 }
 
 pub struct Keyboard<'a> {
-    hid: HidManager,
-    tracker: KeyTracker,
+    hid: &'a mut HidManager,
+    tracker: &'a mut KeyTracker,
     reader: &'a dyn ColumnReader,
     sender: &'a dyn ReportSender,
 }
 
 impl<'a> Keyboard<'a> {
     pub fn new(
-        hid: HidManager,
-        tracker: KeyTracker,
+        hid: &'a mut HidManager,
+        tracker: &'a mut KeyTracker,
         reader: &'a impl ColumnReader,
         sender: &'a impl ReportSender,
     ) -> Self {
@@ -37,7 +37,7 @@ impl<'a> Keyboard<'a> {
         };
     }
 
-    pub fn run_forever(mut self) {
+    pub fn run_forever(&mut self) {
         loop {
             for section in 0..layout::N_SECTIONS {
                 for column in 0..layout::SECTION_COLS {

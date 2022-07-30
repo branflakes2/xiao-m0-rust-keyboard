@@ -30,7 +30,7 @@ impl HidManager {
         }
     }
 
-    fn release_key(mut self, key: u8) {
+    fn release_key(&mut self, key: u8) {
         if key == 0 {
             return;
         }
@@ -43,19 +43,19 @@ impl HidManager {
         }
     }
 
-    pub fn press_modifier(mut self, m: u8) {
+    pub fn press_modifier(&mut self, m: u8) {
         if m > 0 && m < 7 {
             self.modifier |= 1 << m;
         }
     }
 
-    pub fn release_modifier(mut self, m: u8) {
+    pub fn release_modifier(&mut self, m: u8) {
         if m > 0 && m < 7 {
             self.modifier &= !(1 << m);
         }
     }
 
-    pub fn report(self) -> KeyboardReport {
+    pub fn report(&self) -> KeyboardReport {
         return KeyboardReport {
             modifier: self.modifier,
             reserved: 0,
@@ -64,7 +64,7 @@ impl HidManager {
         };
     }
 
-    pub fn process_key(mut self, key: keys::KeyStroke, down: bool) {
+    pub fn process_key(&mut self, key: keys::KeyStroke, down: bool) {
         if key.is_layer {
             return;
         }
