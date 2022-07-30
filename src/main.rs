@@ -102,11 +102,11 @@ fn main() -> ! {
         pins.a5,
     );
     let i2c_bus = shared_bus::BusManagerSimple::new(i2c);
-    let mut reader = XiaoM0ColumnReader { i2c_bus };
-    let mut sender = XiaoM0Sender {};
+    let reader = XiaoM0ColumnReader { i2c_bus };
+    let sender = XiaoM0Sender {};
     let tracker = KeyTracker::new();
-    let mut hid_manage = HidManager::new();
-    let mut keyboard = Keyboard::new(hid_manage, tracker, &reader, &sender);
+    let hid_manage = HidManager::new();
+    let keyboard = Keyboard::new(hid_manage, tracker, &reader, &sender);
 
     unsafe {
         USB_HID = Some(HIDClass::new(bus_allocator, KeyboardReport::desc(), 60));

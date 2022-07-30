@@ -6,7 +6,7 @@ pub struct KeyTracker {
     pressed_keys: Layer,
     current_layer: usize,
     default_layer: usize,
-    pressed_layers: [u8; layout::LAYOUT.len()],
+    pressed_layers: [usize; layout::LAYOUT.len()],
 }
 
 impl KeyTracker {
@@ -31,7 +31,7 @@ impl KeyTracker {
                 } else {
                     self.current_layer = key.layer;
                     self.pressed_layers.rotate_right(1);
-                    self.pressed_layers[0] = key.layer as u8;
+                    self.pressed_layers[0] = key.layer;
                 }
             } else {
                 return key;
@@ -60,7 +60,7 @@ impl KeyTracker {
                     self.current_layer = self.pressed_layers[0];
                 }
             } else {
-                return key.hid_code;
+                return key;
             }
         }
         return keys::NONE;
@@ -73,17 +73,17 @@ impl KeyTracker {
         column_number: usize,
     ) -> [[keys::KeyStroke; layout::SECTION_ROWS]; 2] {
         let mut hids = [[keys::NONE; layout::SECTION_ROWS]; 2];
-        if section >= layout::N_SECTIONS || row >= layout::SECTION_ROWS {
-            return hids;
-        }
+        //if section >= layout::N_SECTIONS || row >= layout::SECTION_ROWS {
+        //    return hids;
+        //}
         for row in 0..layout::SECTION_ROWS - 1 {
             if (0x1 << row) & column > 0 {
                 if self.pressed_keys[section][column_number][row].eq(keys::NONE) {
-                    hids[0][i] = self._press_key(section, column_number, row);
+                    hids[0][row] = self._press_key(section, column_number, row);
                 }
             } else {
-                if self.pressed_key[section][column_number][row] != keys::NONE {
-                    hids[1][i] = self._release_key(section, column_number, row)
+                if !self.pressed_keys[section][column_number][row].eq(keys::NONE) {
+                    hids[1][row] = self._release_key(section, column_number, row)
                 }
             }
         }
