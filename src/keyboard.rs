@@ -1,14 +1,16 @@
 pub mod hid_manager;
 
+use atsamd_hal::prelude::_atsamd_hal_embedded_hal_digital_v2_ToggleableOutputPin;
 use hid_manager::key_scanner::{
     layout::{self, Column},
     KeyTracker,
 };
 use hid_manager::HidManager;
 use usbd_hid::descriptor::KeyboardReport;
+use xiao_m0::Led0;
 
 pub trait ColumnReader {
-    fn read_column(&self, section: u8, column: u8) -> Option<Column>;
+    fn read_column(&mut self, section: u8, column: u8) -> Option<Column>;
 }
 
 pub trait ReportSender {
@@ -18,8 +20,9 @@ pub trait ReportSender {
 pub struct Keyboard<'a> {
     hid: &'a mut HidManager,
     tracker: &'a mut KeyTracker,
-    reader: &'a dyn ColumnReader,
+    reader: &'a mut dyn ColumnReader,
     sender: &'a dyn ReportSender,
+    led0: Led0,
     _disabled_sections: [bool; layout::N_SECTIONS],
 }
 
@@ -27,8 +30,9 @@ impl<'a> Keyboard<'a> {
     pub fn new(
         hid: &'a mut HidManager,
         tracker: &'a mut KeyTracker,
-        reader: &'a impl ColumnReader,
+        reader: &'a mut impl ColumnReader,
         sender: &'a impl ReportSender,
+        led0: Led0,
     ) -> Self {
         let mut _disabled_sections: [bool; layout::N_SECTIONS] = [false; layout::N_SECTIONS];
         for section in 0..layout::N_SECTIONS {
@@ -42,32 +46,41 @@ impl<'a> Keyboard<'a> {
             tracker,
             reader,
             sender,
+            led0,
             _disabled_sections,
         };
     }
 
     pub fn run_forever(&mut self) {
         loop {
-            for section in 0..layout::N_SECTIONS {
-                for column in 0..layout::SECTION_COLS {
-                    let c = self.reader.read_column(section as u8, column as u8);
-                    if c.is_none() {
+            for i in 0..1000 {
+                if i == 999 {
+                    self.led0.toggle().unwrap();
+                }
+                for section in 0..layout::N_SECTIONS {
+                    if !self._disabled_sections[section] {
                         continue;
                     }
-                    let strokes = self.tracker.process_column(section, c.unwrap(), column);
+                    for column in 0..layout::SECTION_COLS {
+                        let c = self.reader.read_column(section as u8, column as u8);
+                        if c.is_none() {
+                            continue;
+                        }
+                        let strokes = self.tracker.process_column(section, c.unwrap(), column);
 
-                    // press keys
-                    for key in 0..strokes[0].len() {
-                        self.hid.process_key(strokes[0][key], true);
+                        // press keys
+                        for key in 0..strokes[0].len() {
+                            self.hid.process_key(strokes[0][key], true);
+                        }
+
+                        // release keys
+                        for key in 0..strokes[1].len() {
+                            self.hid.process_key(strokes[1][key], false);
+                        }
+
+                        let report = self.hid.report();
+                        self.sender.send_report(report);
                     }
-
-                    // release keys
-                    for key in 0..strokes[1].len() {
-                        self.hid.process_key(strokes[1][key], false);
-                    }
-
-                    let report = self.hid.report();
-                    self.sender.send_report(report);
                 }
             }
         }
