@@ -56,7 +56,7 @@ struct XiaoM0ColumnReader<T> {
 }
 
 impl<
-        T: cortex_m::prelude::_embedded_hal_blocking_i2c_WriteRead
+        T: cortex_m::prelude::_embedded_hal_blocking_i2c_Read
             + cortex_m::prelude::_embedded_hal_blocking_i2c_Write,
     > ColumnReader for XiaoM0ColumnReader<T>
 {
@@ -77,16 +77,32 @@ impl<
             self.is_setup[section as usize] = true;
         }
         let key: &mut [u8; 1] = &mut [0x00];
-        let res = proxy.write_read(
+        let res = proxy.write(
             layout::SECTION_I2C_ADDRESSES[section as usize],
-            &[0x03, 1 << column, 0x00],
-            key,
+            &[0x03, 1 << column],
         );
         if res.is_err() {
             if section == 0 {
                 self.led1.toggle().unwrap();
             }
             return None;
+        }
+        let res = proxy.write(layout::SECTION_I2C_ADDRESSES[section as usize], &[0x00]);
+        if res.is_err() {
+            if section == 0 {
+                self.led1.toggle().unwrap();
+            }
+            return None;
+        }
+        let res = proxy.read(layout::SECTION_I2C_ADDRESSES[section as usize], key);
+        if res.is_err() {
+            if section == 0 {
+                self.led1.toggle().unwrap();
+            }
+            return None;
+        }
+        if key[0] > 0 {
+            self.led1.toggle().unwrap();
         }
         return Some(key[0]);
     }
@@ -176,9 +192,7 @@ fn main() -> ! {
         .unwrap();
         asm_delay(15 * 1024 * 1024);
     }*/
-    loop {
-        keyboard.run_forever();
-    }
+    keyboard.run_forever()
 }
 
 //fn push_keyboard_report(report: KeyboardReport) -> Result<usize, usb_device::UsbError> {}

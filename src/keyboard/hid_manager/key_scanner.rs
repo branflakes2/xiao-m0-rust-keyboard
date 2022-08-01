@@ -76,7 +76,7 @@ impl KeyTracker {
         //if section >= layout::N_SECTIONS || row >= layout::SECTION_ROWS {
         //    return hids;
         //}
-        for row in 0..layout::SECTION_ROWS - 1 {
+        for row in 0..layout::SECTION_ROWS {
             if (0x1 << row) & column > 0 {
                 if self.pressed_keys[section][column_number][row].eq(keys::NONE) {
                     hids[0][row] = self._press_key(section, column_number, row);

@@ -51,7 +51,7 @@ impl<'a> Keyboard<'a> {
         };
     }
 
-    pub fn run_forever(&mut self) {
+    pub fn run_forever(&mut self) -> ! {
         loop {
             for i in 0..1000 {
                 if i == 999 {
@@ -67,9 +67,6 @@ impl<'a> Keyboard<'a> {
                     for column in 0..layout::SECTION_COLS {
                         let c = self.reader.read_column(section as u8, column as u8);
                         if c.is_none() {
-                            if section == 0 && i == 999 {
-                                self.led0.toggle().unwrap();
-                            }
                             continue;
                         }
                         let strokes = self.tracker.process_column(section, c.unwrap(), column);
