@@ -12,7 +12,7 @@ pub struct KeyTracker {
 impl KeyTracker {
     pub fn new() -> Self {
         return KeyTracker {
-            pressed_keys: [[[keys::NONE; layout::SECTION_ROWS]; layout::SECTION_COLS];
+            pressed_keys: [[[keys::NONE; layout::SECTION_COLS]; layout::SECTION_ROWS];
                 layout::N_SECTIONS],
             current_layer: 0,
             default_layer: 0,
@@ -23,8 +23,8 @@ impl KeyTracker {
     fn _press_key(&mut self, section: usize, col: usize, row: usize) -> keys::KeyStroke {
         if section < layout::N_SECTIONS && col < layout::SECTION_COLS && row < layout::SECTION_ROWS
         {
-            let key = layout::LAYOUT[section][self.current_layer][col][row];
-            self.pressed_keys[section][col][row] = key;
+            let key = layout::LAYOUT[section][self.current_layer][row][col];
+            self.pressed_keys[section][row][col] = key;
             if key.is_layer {
                 if key.toggle {
                     self.default_layer = key.layer;
@@ -43,8 +43,8 @@ impl KeyTracker {
     fn _release_key(&mut self, section: usize, col: usize, row: usize) -> keys::KeyStroke {
         if section < layout::N_SECTIONS && col < layout::SECTION_COLS && row < layout::SECTION_ROWS
         {
-            let key = self.pressed_keys[section][col][row];
-            self.pressed_keys[section][col][row] = keys::NONE;
+            let key = self.pressed_keys[section][row][col];
+            self.pressed_keys[section][row][col] = keys::NONE;
             if key.is_layer {
                 if !key.toggle {
                     // remove the layer from the list of pressed layers
@@ -78,11 +78,11 @@ impl KeyTracker {
         //}
         for row in 0..layout::SECTION_ROWS {
             if (0x1 << row) & column > 0 {
-                if self.pressed_keys[section][column_number][row].eq(keys::NONE) {
+                if self.pressed_keys[section][row][column_number].eq(keys::NONE) {
                     hids[0][row] = self._press_key(section, column_number, row);
                 }
             } else {
-                if !self.pressed_keys[section][column_number][row].eq(keys::NONE) {
+                if !self.pressed_keys[section][row][column_number].eq(keys::NONE) {
                     hids[1][row] = self._release_key(section, column_number, row)
                 }
             }
