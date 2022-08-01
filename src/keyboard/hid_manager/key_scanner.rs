@@ -23,7 +23,7 @@ impl KeyTracker {
     fn _press_key(&mut self, section: usize, col: usize, row: usize) -> keys::KeyStroke {
         if section < layout::N_SECTIONS && col < layout::SECTION_COLS && row < layout::SECTION_ROWS
         {
-            let key = layout::LAYOUT[section][self.current_layer][row][col];
+            let key = layout::get_key(self.current_layer, section, col, row);
             self.pressed_keys[section][row][col] = key;
             if key.is_layer {
                 if key.toggle {
