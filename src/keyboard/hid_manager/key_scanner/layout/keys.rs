@@ -21,6 +21,26 @@ pub struct KeyStroke {
 }
 
 impl KeyStroke {
+    pub fn layer(layer: usize) -> Self {
+        return KeyStroke {
+            modifiers: 0,
+            hid_code: hid_codes::KEY_NONE,
+            is_layer: true,
+            layer: layer,
+            toggle: false,
+        };
+    }
+
+    pub fn t_layer(layer: usize) -> Self {
+        return KeyStroke {
+            modifiers: 0,
+            hid_code: hid_codes::KEY_NONE,
+            is_layer: true,
+            layer: layer,
+            toggle: true,
+        };
+    }
+
     pub fn eq(self, other: KeyStroke) -> bool {
         return self.modifiers == other.modifiers
             && self.hid_code == other.hid_code
