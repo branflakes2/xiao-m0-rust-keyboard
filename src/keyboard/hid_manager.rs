@@ -51,15 +51,11 @@ impl HidManager {
     }
 
     pub fn press_modifier(&mut self, m: u8) {
-        if m < 8 {
-            self.modifier |= 1 << m;
-        }
+        self.modifier |= m;
     }
 
     pub fn release_modifier(&mut self, m: u8) {
-        if m < 8 {
-            self.modifier &= !(1 << m);
-        }
+        self.modifier &= !m;
     }
 
     pub fn report(&self) -> KeyboardReport {

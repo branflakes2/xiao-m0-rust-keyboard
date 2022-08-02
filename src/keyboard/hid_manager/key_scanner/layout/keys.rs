@@ -239,3 +239,155 @@ pub const Z: KeyStroke = KeyStroke {
     layer: 0,
     toggle: false,
 };
+
+pub const TAB: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_TAB,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const APOSTROPHE: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_APOSTROPHE,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const COMMA: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_COMMA,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const PERIOD: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_DOT,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const BACKSPACE: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_BACKSPACE,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const ESC: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_ESC,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const SLASH: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_SLASH,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const LSHIFT: KeyStroke = KeyStroke {
+    modifiers: hid_codes::KEY_MOD_LSHIFT,
+    hid_code: hid_codes::KEY_NONE,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const LCTRL: KeyStroke = KeyStroke {
+    modifiers: hid_codes::KEY_MOD_LCTRL,
+    hid_code: hid_codes::KEY_NONE,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const LMETA: KeyStroke = KeyStroke {
+    modifiers: hid_codes::KEY_MOD_LMETA,
+    hid_code: hid_codes::KEY_NONE,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const LALT: KeyStroke = KeyStroke {
+    modifiers: hid_codes::KEY_MOD_LALT,
+    hid_code: hid_codes::KEY_NONE,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const LEFT: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_LEFT,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const RIGHT: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_RIGHT,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const UP: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_UP,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const DOWN: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_DOWN,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const SCOLON: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_SEMICOLON,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const SPACE: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_SPACE,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const END: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_END,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const HOME: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_END,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
