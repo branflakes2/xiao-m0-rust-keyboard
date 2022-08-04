@@ -406,7 +406,34 @@ pub const ENTER: KeyStroke = KeyStroke {
     layer: 0,
     toggle: false,
 };
-
+pub const PGUP: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_PAGEUP,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const PGDN: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_PAGEDOWN,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const RCTRL: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_RIGHTCTRL,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const RALT: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_RIGHTALT,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
 pub const LAYER1: KeyStroke = KeyStroke {
     modifiers: 0,
     hid_code: hid_codes::KEY_NONE,
