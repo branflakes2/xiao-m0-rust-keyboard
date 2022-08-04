@@ -18,7 +18,7 @@ use usbd_hid::{
     hid_class::HIDClass,
 };
 
-use bsp::{entry, hal, pac, Led1};
+use bsp::{entry, hal, pac};
 use keyboard::{
     //self,
     hid_manager::{
@@ -46,7 +46,6 @@ impl ReportSender for XiaoM0Sender {
 struct XiaoM0ColumnReader<T> {
     i2c_bus: shared_bus::BusManagerSimple<T>,
     is_setup: [bool; layout::N_SECTIONS],
-    led1: Led1,
 }
 
 impl<
@@ -64,8 +63,7 @@ impl<
                 layout::SECTION_I2C_ADDRESSES[section as usize],
                 &[0x07, 0x00],
             );
-            if res.is_err() && section == 0 {
-                self.led1.toggle().unwrap();
+            if res.is_err() {
                 return None;
             }
             self.is_setup[section as usize] = true;
@@ -76,27 +74,15 @@ impl<
             &[0x03, 1 << column],
         );
         if res.is_err() {
-            if section == 0 {
-                self.led1.toggle().unwrap();
-            }
             return None;
         }
         let res = proxy.write(layout::SECTION_I2C_ADDRESSES[section as usize], &[0x00]);
         if res.is_err() {
-            if section == 0 {
-                self.led1.toggle().unwrap();
-            }
             return None;
         }
         let res = proxy.read(layout::SECTION_I2C_ADDRESSES[section as usize], key);
         if res.is_err() {
-            if section == 0 {
-                self.led1.toggle().unwrap();
-            }
             return None;
-        }
-        if key[0] > 0 {
-            self.led1.toggle().unwrap();
         }
         return Some(key[0]);
     }
@@ -133,13 +119,8 @@ fn main() -> ! {
     );
     let i2c_bus = shared_bus::BusManagerSimple::new(i2c);
     let is_setup = [false; layout::N_SECTIONS];
-    let led1 = pins.led1.into_push_pull_output();
     let led0 = pins.led0.into_push_pull_output();
-    let mut reader = XiaoM0ColumnReader {
-        i2c_bus,
-        is_setup,
-        led1,
-    };
+    let mut reader = XiaoM0ColumnReader { i2c_bus, is_setup };
     let sender = XiaoM0Sender {};
     let mut tracker = KeyTracker::new();
     let mut hid_manage = HidManager::new();
@@ -163,29 +144,6 @@ fn main() -> ! {
         NVIC::unmask(interrupt::USB);
     }
 
-    // Flash the LED in a spin loop to demonstrate
-    // that USB is entirely interrupt driven.
-    //let mut led_loop: Led0 = pins.led0.into_push_pull_output();
-    /*loop {
-        asm_delay(15 * 1024 * 1024);
-        led_loop.toggle().unwrap();
-        push_keyboard_report(KeyboardReport {
-            modifier: 0,
-            reserved: 0,
-            leds: 0,
-            keycodes: [0x04, 0, 0, 0, 0, 0],
-        })
-        .unwrap();
-        asm_delay(15 * 1024 * 1024);
-        push_keyboard_report(KeyboardReport {
-            modifier: 0,
-            reserved: 0,
-            leds: 0,
-            keycodes: [0, 0, 0, 0, 0, 0],
-        })
-        .unwrap();
-        asm_delay(15 * 1024 * 1024);
-    }*/
     keyboard.run_forever()
 }
 
