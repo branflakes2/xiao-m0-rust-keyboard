@@ -15,7 +15,9 @@ use shared_bus;
 use usb_device::{bus::UsbBusAllocator, prelude::*};
 use usbd_hid::{
     descriptor::{generator_prelude::*, KeyboardReport},
-    hid_class::HIDClass,
+    hid_class::{
+        HIDClass, HidClassSettings, HidCountryCode, HidProtocol, HidSubClass, ProtocolModeConfig,
+    },
 };
 
 use bsp::{entry, hal, pac};
@@ -125,9 +127,20 @@ fn main() -> ! {
     let mut tracker = KeyTracker::new();
     let mut hid_manage = HidManager::new();
     let mut keyboard = Keyboard::new(&mut hid_manage, &mut tracker, &mut reader, &sender, led0);
+    let hid_settings = HidClassSettings {
+        subclass: HidSubClass::Boot,
+        protocol: HidProtocol::Keyboard,
+        config: ProtocolModeConfig::ForceBoot,
+        locale: HidCountryCode::US,
+    };
 
     unsafe {
-        USB_HID = Some(HIDClass::new(bus_allocator, KeyboardReport::desc(), 60));
+        USB_HID = Some(HIDClass::new_with_settings(
+            bus_allocator,
+            KeyboardReport::desc(),
+            20,
+            hid_settings,
+        ));
         USB_BUS = Some(
             UsbDeviceBuilder::new(&bus_allocator, UsbVidPid(0xdead, 0xbeef))
                 .manufacturer("Brian Weber")
