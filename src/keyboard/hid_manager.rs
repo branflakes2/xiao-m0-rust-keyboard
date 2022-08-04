@@ -45,7 +45,10 @@ impl HidManager {
                     }
                     j += 1;
                 }
-                break;
+                if i == 5 {
+                    self.keys[5] = 0;
+                    return;
+                }
             }
         }
     }
