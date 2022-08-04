@@ -48,16 +48,20 @@ impl KeyTracker {
             if key.is_layer {
                 if !key.toggle {
                     // remove the layer from the list of pressed layers
-                    for i in 0..layout::LAYOUT.len() - 1 {
+                    for i in 0..layout::LAYOUT.len() {
                         if self.pressed_layers[i] == key.layer {
-                            for j in i..layout::LAYOUT.len() - 2 {
+                            for j in i..layout::LAYOUT.len() - 1 {
                                 self.pressed_layers[j] = self.pressed_layers[j + 1];
                             }
                             self.pressed_layers[self.pressed_layers.len() - 1] = 0xFF;
                             break;
                         }
                     }
-                    self.current_layer = self.pressed_layers[0];
+                    if self.pressed_layers[0] == 0xFF {
+                        self.current_layer = self.default_layer;
+                    } else {
+                        self.current_layer = self.pressed_layers[0];
+                    }
                 }
             } else {
                 return key;

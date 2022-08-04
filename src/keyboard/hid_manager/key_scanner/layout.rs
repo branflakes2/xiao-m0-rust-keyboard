@@ -18,7 +18,7 @@ pub type Column = u8; // set this depending on the size that's read from
 
 #[rustfmt::skip]
 mod unformatted {
-    use crate::keyboard::layout::{SECTION_COLS, SECTION_ROWS, N_SECTIONS, Layer, keys};
+    use crate::keyboard::layout::{SECTION_COLS, SECTION_ROWS, N_SECTIONS, Layer, keys::{self, KeyStroke}};
     pub const LAYOUT_MAP: [[[[usize; 2]; SECTION_COLS]; SECTION_ROWS]; N_SECTIONS] = [
         // Left Section
         [
@@ -42,6 +42,7 @@ mod unformatted {
             [[7, 0], [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7]],
         ]
     ];
+
     pub const LAYOUT: [Layer; 2] = [
         // Layer 0
         [
@@ -50,7 +51,7 @@ mod unformatted {
                 [keys::TAB, keys::APOSTROPHE, keys::COMMA, keys::PERIOD, keys::P, keys::Y, keys::NONE, keys::NONE],
                 [keys::ESC, keys::A, keys::O, keys::E, keys::U, keys::I, keys::NONE, keys::NONE],
                 [keys::LSHIFT, keys::SCOLON, keys::Q, keys::J, keys::K, keys::X, keys::NONE, keys::NONE],
-                [keys::NONE, keys::NONE, keys::LEFT, keys::RIGHT, keys::NONE, keys::SPACE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::LEFT, keys::RIGHT, keys::LAYER1, keys::SPACE, keys::NONE, keys::NONE],
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::LALT, keys::LCTRL, keys::NONE, keys::NONE],
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::HOME, keys::END, keys::NONE, keys::NONE],
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
@@ -58,14 +59,14 @@ mod unformatted {
             ],
             // Right Section
             [
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::I, keys::J, keys::K, keys::L, keys::M, keys::N, keys::O, keys::P],
-                [keys::Q, keys::R, keys::S, keys::T, keys::U, keys::V, keys::W, keys::X],
-                [keys::Y, keys::Z, keys::A, keys::B, keys::C, keys::D, keys::E, keys::F],
-                [keys::G, keys::H, keys::I, keys::J, keys::K, keys::L, keys::M, keys::N],
-                [keys::O, keys::P, keys::Q, keys::R, keys::S, keys::T, keys::U, keys::V],
-                [keys::W, keys::X, keys::Y, keys::Z, keys::A, keys::B, keys::C, keys::D],
-                [keys::E, keys::F, keys::G, keys::H, keys::I, keys::J, keys::K, keys::L],
+                [keys::NONE, keys::NONE, keys::F, keys::G, keys::C, keys::R, keys::L, keys::BACKSPACE],
+                [keys::NONE, keys::NONE, keys::D, keys::H, keys::T, keys::N, keys::S, keys::FSLASH],
+                [keys::NONE, keys::NONE, keys::B, keys::M, keys::W, keys::V, keys::Z, keys::ENTER],
+                [keys::NONE, keys::NONE, keys::A, keys::B, keys::C, keys::D, keys::E, keys::F],
+                [keys::NONE, keys::NONE, keys::I, keys::J, keys::K, keys::L, keys::M, keys::N],
+                [keys::NONE, keys::NONE, keys::Q, keys::R, keys::S, keys::T, keys::U, keys::V],
+                [keys::NONE, keys::NONE, keys::Y, keys::Z, keys::A, keys::B, keys::C, keys::D],
+                [keys::NONE, keys::NONE, keys::G, keys::H, keys::I, keys::J, keys::K, keys::L],
             ],
         ],
         // Layer 1

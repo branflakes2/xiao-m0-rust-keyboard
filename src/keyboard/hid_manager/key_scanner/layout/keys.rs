@@ -57,6 +57,13 @@ pub const NONE: KeyStroke = KeyStroke {
     layer: 0,
     toggle: false,
 };
+pub const OVER: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_ERR_OVF,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
 pub const A: KeyStroke = KeyStroke {
     modifiers: 0,
     hid_code: hid_codes::KEY_A,
@@ -288,7 +295,7 @@ pub const ESC: KeyStroke = KeyStroke {
     toggle: false,
 };
 
-pub const SLASH: KeyStroke = KeyStroke {
+pub const FSLASH: KeyStroke = KeyStroke {
     modifiers: 0,
     hid_code: hid_codes::KEY_SLASH,
     is_layer: false,
@@ -390,4 +397,36 @@ pub const HOME: KeyStroke = KeyStroke {
     is_layer: false,
     layer: 0,
     toggle: false,
+};
+
+pub const ENTER: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_ENTER,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
+pub const LAYER1: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_NONE,
+    is_layer: true,
+    layer: 1,
+    toggle: false,
+};
+
+pub const LAYER2: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_NONE,
+    is_layer: true,
+    layer: 2,
+    toggle: false,
+};
+
+pub const T_LAYER3: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_NONE,
+    is_layer: true,
+    layer: 3,
+    toggle: true,
 };
