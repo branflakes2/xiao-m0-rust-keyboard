@@ -74,26 +74,27 @@ mod unformatted {
         // Layer 1
         [
             // Left Section
+            // 
             [
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::I, keys::J, keys::K, keys::L, keys::M, keys::N, keys::O, keys::P],
-                [keys::Q, keys::R, keys::S, keys::T, keys::U, keys::V, keys::W, keys::X],
-                [keys::Y, keys::Z, keys::A, keys::B, keys::C, keys::D, keys::E, keys::F],
-                [keys::G, keys::H, keys::I, keys::J, keys::K, keys::L, keys::M, keys::N],
-                [keys::O, keys::P, keys::Q, keys::R, keys::S, keys::T, keys::U, keys::V],
-                [keys::W, keys::X, keys::Y, keys::Z, keys::A, keys::B, keys::C, keys::D],
-                [keys::E, keys::F, keys::G, keys::H, keys::I, keys::J, keys::K, keys::L],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::F1, keys::F2, keys::F3, keys::F4, keys::F5, keys::F6, keys::NONE, keys::NONE],
+                [keys::F7, keys::F8, keys::F9, keys::F10, keys::F11, keys::F12, keys::NONE, keys::NONE],
+                [keys::SPACE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
             ],
             // Right Section
             [
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
-                [keys::A, keys::B, keys::C, keys::D, keys::E, keys::F, keys::G, keys::H],
+                [keys::NSUB, keys::K7, keys::K8, keys::K9, keys::NDIV, keys::BACKSPACE, keys::NONE, keys::NONE],
+                [keys::NPLUS, keys::K4, keys::K5, keys::K6, keys::NMUL, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NPLUS, keys::K1, keys::K2, keys::K3, keys::ENTER, keys::ENTER, keys::NONE, keys::NONE],
+                [keys::SPACE, keys::NONE, keys::K0, keys::PERIOD, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
             ],
         ],
     ];

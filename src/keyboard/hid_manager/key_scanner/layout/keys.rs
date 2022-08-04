@@ -457,3 +457,262 @@ pub const T_LAYER3: KeyStroke = KeyStroke {
     layer: 3,
     toggle: true,
 };
+pub const F1: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F1,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F2: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F2,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F3: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F3,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F4: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F4,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F5: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F5,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F6: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F6,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F7: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F7,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F8: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F8,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F9: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F9,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F10: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F10,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F11: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F11,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const F12: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_F12,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N0: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP0,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N1: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP1,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N2: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP2,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N3: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP3,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N4: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP4,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N5: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP5,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N6: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP6,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N7: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP7,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N8: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP8,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const N9: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KP9,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const NSUB: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KPMINUS,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const NPLUS: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KPPLUS,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const NMUL: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KPASTERISK,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const NDIV: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KPSLASH,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const NDOT: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_KPDOT,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K0: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_0,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K1: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_1,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K2: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_2,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K3: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_3,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K4: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_4,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K5: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_5,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K6: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_6,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K7: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_7,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K8: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_8,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const K9: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_9,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
