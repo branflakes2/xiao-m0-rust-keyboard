@@ -5,6 +5,7 @@ use usbd_hid::descriptor::KeyboardReport;
 
 pub struct HidManager {
     modifier: u8,
+    clearable_modifier: u8,
     keys: [u8; 6],
 }
 
@@ -12,6 +13,7 @@ impl HidManager {
     pub fn new() -> Self {
         return HidManager {
             modifier: 0,
+            clearable_modifier: 0,
             keys: [0, 0, 0, 0, 0, 0],
         };
     }
@@ -42,8 +44,13 @@ impl HidManager {
         }
     }
 
-    pub fn press_modifier(&mut self, m: u8) {
-        self.modifier |= m;
+    pub fn press_modifier(&mut self, m: u8, clearable: bool) {
+        self.clearable_modifier = 0;
+        if clearable {
+            self.clearable_modifier = m;
+        } else {
+            self.modifier |= m;
+        }
     }
 
     pub fn release_modifier(&mut self, m: u8) {
@@ -52,23 +59,24 @@ impl HidManager {
 
     pub fn report(&self) -> KeyboardReport {
         return KeyboardReport {
-            modifier: self.modifier,
+            modifier: self.modifier | self.clearable_modifier,
             reserved: 0,
             leds: 0,
             keycodes: self.keys,
         };
     }
 
-    pub fn process_key(&mut self, key: keys::KeyStroke, down: bool) {
-        if key.is_layer {
-            return;
+    pub fn process_key(&mut self, key: keys::KeyStroke, down: bool) -> bool {
+        if key.is_layer || key.eq(keys::NONE) {
+            return false;
         }
         if down {
             self.press_key(key.hid_code);
-            self.press_modifier(key.modifiers);
+            self.press_modifier(key.modifiers, key.clearable);
         } else {
             self.release_key(key.hid_code);
             self.release_modifier(key.modifiers);
         }
+        return true;
     }
 }

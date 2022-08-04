@@ -72,17 +72,19 @@ impl<'a> Keyboard<'a> {
                         let strokes = self.tracker.process_column(section, c.unwrap(), column);
 
                         // press keys
+                        let mut updated = false;
                         for key in 0..strokes[0].len() {
-                            self.hid.process_key(strokes[0][key], true);
+                            updated |= self.hid.process_key(strokes[0][key], true);
                         }
 
                         // release keys
                         for key in 0..strokes[1].len() {
-                            self.hid.process_key(strokes[1][key], false);
+                            updated |= self.hid.process_key(strokes[1][key], false);
                         }
-
-                        let report = self.hid.report();
-                        self.sender.send_report(report);
+                        if updated {
+                            let report = self.hid.report();
+                            self.sender.send_report(report);
+                        }
                     }
                 }
             }

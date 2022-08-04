@@ -45,7 +45,7 @@ mod unformatted {
         ]
     ];
 
-    pub const LAYOUT: [Layer; 2] = [
+    pub const LAYOUT: [Layer; 3] = [
         // Layer 0
         [
             // Left Section
@@ -74,7 +74,6 @@ mod unformatted {
         // Layer 1
         [
             // Left Section
-            // 
             [
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
                 [keys::F1, keys::F2, keys::F3, keys::F4, keys::F5, keys::F6, keys::NONE, keys::NONE],
@@ -97,6 +96,31 @@ mod unformatted {
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
             ],
         ],
+        // Layer 2
+        [
+            // Left Section
+            [
+                [keys::BACKTICK, keys::K1, keys::K2, keys::K3, keys::K4, keys::K5, keys::NONE, keys::NONE], 
+                [keys::ESC, keys::EXCLAMATION, keys::QUESTION, keys::LPAREN, keys::RPAREN, keys::ASTERISK, keys::NONE, keys::NONE], 
+                [keys::LSHIFT, keys::ATSIGN, keys::POUND, keys::AND, keys::DOLLAR, keys::PERCENT, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+            ],
+            //Right Section
+            [
+                [keys::K6, keys::K7, keys::K8, keys::K9, keys::K0, keys::BACKSPACE, keys::NONE, keys::NONE], 
+                [keys::EQUAL, keys::LBRACKET, keys::RBRACKET, keys::LCBRACE, keys::RCBRACE, keys::BSLASH, keys::NONE, keys::NONE], 
+                [keys::UPCARROT, keys::PLUS, keys::HYPHEN, keys::UNDERSCORE, keys::BACKTICK, keys::ENTER, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+            ],
+        ]
     ];
 }
 
