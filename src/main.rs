@@ -136,7 +136,7 @@ fn main() -> ! {
 
     unsafe {
         USB_HID = Some(HIDClass::new_with_settings(
-            bus_allocator,
+            &bus_allocator,
             KeyboardReport::desc(),
             20,
             hid_settings,
