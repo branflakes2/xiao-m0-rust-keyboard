@@ -37,18 +37,7 @@ impl HidManager {
         }
         for i in 0..6 {
             if self.keys[i] == key {
-                let mut j = i;
-                while j < 5 {
-                    self.keys[j] = self.keys[j + 1];
-                    if self.keys[j] == 0 {
-                        return;
-                    }
-                    j += 1;
-                }
-                if i == 5 {
-                    self.keys[5] = 0;
-                    return;
-                }
+                self.keys[i] = 0;
             }
         }
     }
