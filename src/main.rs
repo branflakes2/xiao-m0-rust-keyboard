@@ -4,11 +4,7 @@
 extern crate panic_halt;
 mod keyboard;
 
-use cortex_m::{
-    //asm::delay as asm_delay,
-    interrupt::free as disable_interrupts,
-    peripheral::NVIC,
-};
+use cortex_m::{asm::delay, interrupt::free as disable_interrupts, peripheral::NVIC};
 use hal::{clock::GenericClockController, prelude::*, time::KiloHertz, usb::UsbBus};
 use pac::{interrupt, CorePeripherals, Peripherals};
 use shared_bus;
@@ -41,7 +37,16 @@ struct XiaoM0Sender {}
 
 impl ReportSender for XiaoM0Sender {
     fn send_report(&self, report: KeyboardReport) {
-        disable_interrupts(|_| unsafe { USB_HID.as_mut().map(|hid| hid.push_input(&report)) });
+        disable_interrupts(|_| unsafe {
+            USB_HID.as_mut().map(|hid| {
+                while let Some(err) = hid.push_input(&report).err() {
+                    match err {
+                        UsbError::WouldBlock => delay(1024),
+                        _ => break,
+                    }
+                }
+            })
+        });
     }
 }
 

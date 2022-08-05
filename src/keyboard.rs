@@ -1,7 +1,6 @@
 pub mod hid_manager;
 
 use atsamd_hal::prelude::_atsamd_hal_embedded_hal_digital_v2_ToggleableOutputPin;
-use cortex_m::asm::delay;
 use hid_manager::key_scanner::{
     layout::{self, Column},
     KeyTracker,
@@ -54,7 +53,10 @@ impl<'a> Keyboard<'a> {
 
     pub fn run_forever(&mut self) -> ! {
         loop {
-            for i in 0..10 {
+            for i in 0..100 {
+                if i == 0 {
+                    self.led0.toggle().unwrap();
+                }
                 for section in 0..layout::N_SECTIONS {
                     if self._disabled_sections[section] {
                         continue;
@@ -77,9 +79,7 @@ impl<'a> Keyboard<'a> {
                             updated |= self.hid.process_key(strokes[1][key], false);
                         }
 
-                        // sometimes keys get stuck for some reason???
-                        // if a key looks like it's being held, make sure it is
-                        if updated || (c.unwrap() > 0 && i == 0) {
+                        if updated {
                             let report = self.hid.report();
                             self.sender.send_report(report);
                         }
