@@ -20,7 +20,7 @@ use usbd_hid::{
     },
 };
 
-use bsp::{entry, hal, pac};
+use bsp::{entry, hal, pac, Led2};
 use keyboard::{
     //self,
     hid_manager::{
@@ -122,23 +122,26 @@ fn main() -> ! {
     let i2c_bus = shared_bus::BusManagerSimple::new(i2c);
     let is_setup = [false; layout::N_SECTIONS];
     let led0 = pins.led0.into_push_pull_output();
+    unsafe {
+        LED = Some(pins.led2.into_push_pull_output());
+    }
     let mut reader = XiaoM0ColumnReader { i2c_bus, is_setup };
     let sender = XiaoM0Sender {};
     let mut tracker = KeyTracker::new();
     let mut hid_manage = HidManager::new();
     let mut keyboard = Keyboard::new(&mut hid_manage, &mut tracker, &mut reader, &sender, led0);
     let hid_settings = HidClassSettings {
-        subclass: HidSubClass::Boot,
-        protocol: HidProtocol::Keyboard,
-        config: ProtocolModeConfig::ForceBoot,
-        locale: HidCountryCode::US,
+        subclass: HidSubClass::NoSubClass,
+        protocol: HidProtocol::Generic,
+        config: ProtocolModeConfig::DefaultBehavior,
+        locale: HidCountryCode::NotSupported,
     };
 
     unsafe {
-        USB_HID = Some(HIDClass::new_with_settings(
+        USB_HID = Some(HIDClass::new_ep_in_with_settings(
             &bus_allocator,
             KeyboardReport::desc(),
-            20,
+            10,
             hid_settings,
         ));
         USB_BUS = Some(
@@ -149,6 +152,7 @@ fn main() -> ! {
                 .device_class(0x03)
                 .build(),
         );
+
         //LED_DATA = Some(pins.led1.into_mode());
     }
 
@@ -165,11 +169,16 @@ fn main() -> ! {
 static mut USB_ALLOCATOR: Option<UsbBusAllocator<UsbBus>> = None;
 static mut USB_BUS: Option<UsbDevice<UsbBus>> = None;
 static mut USB_HID: Option<HIDClass<UsbBus>> = None;
+static mut LED: Option<Led2> = None;
 
 fn poll_usb() {
     unsafe {
-        if let (Some(usb_dev), Some(hid)) = (USB_BUS.as_mut(), USB_HID.as_mut()) {
+        if let (Some(usb_dev), Some(hid), Some(led)) =
+            (USB_BUS.as_mut(), USB_HID.as_mut(), LED.as_mut())
+        {
+            led.toggle().unwrap();
             usb_dev.poll(&mut [hid]);
+            led.toggle().unwrap();
         }
     };
 }

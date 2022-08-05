@@ -13,7 +13,8 @@ cortex-m-rt = "0.7.1"
 cortex-m-semihosting = "0.3.3"
 panic-halt = "0.2.0"
 usb-device = "0.2"
-usbd-hid = "0.6.0"
+#usbd-hid = "0.6.0"
+usbd-hid = {path = "../usbd-hid"}
 shared-bus = "0.2.4"
 
 # Uncomment for the panic example.
