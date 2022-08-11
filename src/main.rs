@@ -1,12 +1,12 @@
 #![no_std]
 #![no_main]
 
-extern crate panic_halt;
 mod keyboard;
 
 use cortex_m::{asm::delay, interrupt::free as disable_interrupts, peripheral::NVIC};
 use hal::{clock::GenericClockController, prelude::*, time::KiloHertz, usb::UsbBus};
 use pac::{interrupt, CorePeripherals, Peripherals};
+use panic_semihosting as _;
 use shared_bus;
 use usb_device::{bus::UsbBusAllocator, prelude::*};
 use usbd_hid::{
@@ -17,11 +17,11 @@ use usbd_hid::{
 };
 
 use bsp::{entry, hal, pac, Led2};
+use cortex_m_semihosting::{debug, hprintln};
 use keyboard::{
     //self,
     hid_manager::{
         key_scanner::{
-            //self,
             layout::{self, Column},
             KeyTracker,
         },
@@ -37,16 +37,25 @@ struct XiaoM0Sender {}
 
 impl ReportSender for XiaoM0Sender {
     fn send_report(&self, report: KeyboardReport) {
+        let mut e: Option<UsbError> = None;
         disable_interrupts(|_| unsafe {
             USB_HID.as_mut().map(|hid| {
-                while let Some(err) = hid.push_input(&report).err() {
-                    match err {
-                        UsbError::WouldBlock => delay(1024),
-                        _ => break,
-                    }
-                }
+                e = hid.push_input(&report).err();
             })
         });
+        while e.is_some() {
+            match &e.as_mut().unwrap() {
+                UsbError::WouldBlock => (|| {
+                    delay(1024);
+                    disable_interrupts(|_| unsafe {
+                        USB_HID.as_mut().map(|hid| {
+                            e = hid.push_input(&report).err();
+                        })
+                    });
+                })(),
+                _ => break,
+            }
+        }
     }
 }
 
@@ -137,8 +146,8 @@ fn main() -> ! {
     let mut keyboard = Keyboard::new(&mut hid_manage, &mut tracker, &mut reader, &sender, led0);
     let hid_settings = HidClassSettings {
         subclass: HidSubClass::NoSubClass,
-        protocol: HidProtocol::Generic,
-        config: ProtocolModeConfig::DefaultBehavior,
+        protocol: HidProtocol::Keyboard,
+        config: ProtocolModeConfig::ForceReport,
         locale: HidCountryCode::NotSupported,
     };
 
@@ -153,8 +162,10 @@ fn main() -> ! {
             UsbDeviceBuilder::new(&bus_allocator, UsbVidPid(0xdead, 0xbeef))
                 .manufacturer("Brian Weber")
                 .product("Custom Dactyl")
-                .serial_number("42")
+                .serial_number("Please WORK")
                 .device_class(0x03)
+                .device_release(0x0000)
+                .supports_remote_wakeup(true)
                 .build(),
         );
 

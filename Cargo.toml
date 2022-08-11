@@ -16,6 +16,7 @@ usb-device = "0.2"
 #usbd-hid = "0.6.0"
 usbd-hid = {path = "../usbd-hid"}
 shared-bus = "0.2.4"
+panic-semihosting = "0.6.0"
 
 # Uncomment for the panic example.
 # panic-itm = "0.4.1"
