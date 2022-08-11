@@ -15,6 +15,7 @@ panic-halt = "0.2.0"
 usb-device = "0.2"
 #usbd-hid = "0.6.0"
 usbd-hid = {path = "../usbd-hid"}
+serial-logger = {path = "../serial-logger"}
 shared-bus = "0.2.4"
 
 # Uncomment for the panic example.

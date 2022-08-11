@@ -5,7 +5,12 @@ extern crate panic_halt;
 mod keyboard;
 
 use cortex_m::{asm::delay, interrupt::free as disable_interrupts, peripheral::NVIC};
-use hal::{clock::GenericClockController, prelude::*, time::KiloHertz, usb::UsbBus};
+use hal::{
+    clock::GenericClockController,
+    prelude::*,
+    time::{Hertz, KiloHertz},
+    usb::UsbBus,
+};
 use pac::{interrupt, CorePeripherals, Peripherals};
 use shared_bus;
 use usb_device::{bus::UsbBusAllocator, prelude::*};
@@ -16,7 +21,7 @@ use usbd_hid::{
     },
 };
 
-use bsp::{entry, hal, pac, Led2};
+use bsp::{entry, hal, pac, uart, Led2};
 use keyboard::{
     //self,
     hid_manager::{
@@ -31,6 +36,7 @@ use keyboard::{
     Keyboard,
     ReportSender,
 };
+use serial_logger::SerialLogger;
 use xiao_m0 as bsp;
 
 struct XiaoM0Sender {}
@@ -124,7 +130,17 @@ fn main() -> ! {
         pins.a4,
         pins.a5,
     );
+    let serial = &mut uart(
+        &mut clocks,
+        Hertz(9600),
+        peripherals.SERCOM4,
+        &mut peripherals.PM,
+        pins.a7,
+        pins.a6,
+    );
     let i2c_bus = shared_bus::BusManagerSimple::new(i2c);
+    let logger = SerialLogger::new(serial);
+    logger.l("Hello, world!\n").unwrap();
     let is_setup = [false; layout::N_SECTIONS];
     let led0 = pins.led0.into_push_pull_output();
     unsafe {
