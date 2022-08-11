@@ -45,11 +45,17 @@ impl HidManager {
     }
 
     pub fn press_modifier(&mut self, m: u8, clearable: bool) {
+        let old_m = self.modifier;
         self.clearable_modifier = 0;
         if clearable {
             self.clearable_modifier = m;
         } else {
             self.modifier |= m;
+        }
+        if m != old_m {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -57,7 +63,7 @@ impl HidManager {
         self.modifier &= !m;
     }
 
-    pub fn report(&self) -> KeyboardReport {
+    pub fn report(&self) -> [KeyboardReport; 2] {
         return KeyboardReport {
             modifier: self.modifier | self.clearable_modifier,
             reserved: 0,
