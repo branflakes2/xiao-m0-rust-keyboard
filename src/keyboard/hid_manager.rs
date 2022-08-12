@@ -7,6 +7,8 @@ pub struct HidManager {
     modifier: u8,
     clearable_modifier: u8,
     keys: [u8; 6],
+    _old_keys: [u8; 6],
+    _old_modifier: u8,
 }
 
 impl HidManager {
@@ -15,6 +17,8 @@ impl HidManager {
             modifier: 0,
             clearable_modifier: 0,
             keys: [0, 0, 0, 0, 0, 0],
+            _old_keys: [0, 0, 0, 0, 0, 0],
+            _old_modifier: 0,
         };
     }
 
@@ -44,7 +48,7 @@ impl HidManager {
         }
     }
 
-    pub fn press_modifier(&mut self, m: u8, clearable: bool) {
+    pub fn press_modifier(&mut self, m: u8, clearable: bool) -> bool {
         let old_m = self.modifier;
         self.clearable_modifier = 0;
         if clearable {
@@ -52,7 +56,7 @@ impl HidManager {
         } else {
             self.modifier |= m;
         }
-        if m != old_m {
+        if self.modifier != old_m {
             return true;
         } else {
             return false;
@@ -63,18 +67,37 @@ impl HidManager {
         self.modifier &= !m;
     }
 
-    pub fn report(&self) -> [KeyboardReport; 2] {
-        return KeyboardReport {
-            modifier: self.modifier | self.clearable_modifier,
-            reserved: 0,
-            leds: 0,
-            keycodes: self.keys,
-        };
+    pub fn report(&mut self, which_reports: &mut u8) -> [KeyboardReport; 2] {
+        *which_reports = 0;
+        let new_modifier = self.modifier | self.clearable_modifier;
+        let reports: [KeyboardReport; 2] = [
+            KeyboardReport {
+                modifier: new_modifier,
+                reserved: 0,
+                leds: 0,
+                keycodes: self._old_keys,
+            },
+            KeyboardReport {
+                modifier: new_modifier,
+                reserved: 0,
+                leds: 0,
+                keycodes: self.keys,
+            },
+        ];
+        if new_modifier != self._old_modifier {
+            *which_reports |= 1;
+            self._old_modifier = new_modifier;
+        }
+        if self.keys != self._old_keys {
+            self._old_keys = self.keys;
+            *which_reports |= 2;
+        }
+        return reports;
     }
 
-    pub fn process_key(&mut self, key: keys::KeyStroke, down: bool) -> bool {
+    pub fn process_key(&mut self, key: keys::KeyStroke, down: bool) {
         if key.is_layer || key.eq(keys::NONE) {
-            return false;
+            return;
         }
         if down {
             self.press_key(key.hid_code);
@@ -83,6 +106,5 @@ impl HidManager {
             self.release_key(key.hid_code);
             self.release_modifier(key.modifiers);
         }
-        return true;
     }
 }

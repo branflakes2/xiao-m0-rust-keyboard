@@ -67,30 +67,23 @@ impl<'a> Keyboard<'a> {
                             continue;
                         }
                         let strokes = self.tracker.process_column(section, c.unwrap(), column);
-
-                        // press modifiers first
-                        let mut updated = false;
+                        // press keys
                         for key in 0..strokes[0].len() {
-                            updated |= self.hid.press_modifier(
-                                strokes[0][key].modifiers,
-                                strokes[0][key].clearable,
-                            );
-                        }
-                        if updated {
-                            self.sender.send_report(self.hid.report());
-                        }
-                        for key in 0..strokes[0].len() {
-                            updated |= self.hid.process_key(strokes[0][key], true);
+                            self.hid.process_key(strokes[0][key], true);
                         }
 
                         // release keys
                         for key in 0..strokes[1].len() {
-                            updated |= self.hid.process_key(strokes[1][key], false);
+                            self.hid.process_key(strokes[1][key], false);
                         }
 
-                        if updated {
-                            let report = self.hid.report();
-                            self.sender.send_report(report);
+                        let mut which_reports: u8 = 0;
+                        let reports = self.hid.report(&mut which_reports);
+                        if which_reports & 1 > 0 {
+                            self.sender.send_report(reports[0]);
+                        }
+                        if which_reports & 2 > 0 {
+                            self.sender.send_report(reports[1]);
                         }
                     }
                 }
