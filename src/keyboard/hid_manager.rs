@@ -65,6 +65,7 @@ impl HidManager {
 
     pub fn release_modifier(&mut self, m: u8) {
         self.modifier &= !m;
+        self.clearable_modifier = 0;
     }
 
     pub fn report(&mut self, which_reports: &mut u8) -> [KeyboardReport; 2] {
@@ -89,8 +90,8 @@ impl HidManager {
             self._old_modifier = new_modifier;
         }
         if self.keys != self._old_keys {
-            self._old_keys = self.keys;
             *which_reports |= 2;
+            self._old_keys = self.keys;
         }
         return reports;
     }
