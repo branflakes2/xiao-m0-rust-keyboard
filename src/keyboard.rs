@@ -68,8 +68,17 @@ impl<'a> Keyboard<'a> {
                         }
                         let strokes = self.tracker.process_column(section, c.unwrap(), column);
 
-                        // press keys
+                        // press modifiers first
                         let mut updated = false;
+                        for key in 0..strokes[0].len() {
+                            updated |= self.hid.press_modifier(
+                                strokes[0][key].modifiers,
+                                strokes[0][key].clearable,
+                            );
+                        }
+                        if updated {
+                            self.sender.send_report(self.hid.report());
+                        }
                         for key in 0..strokes[0].len() {
                             updated |= self.hid.process_key(strokes[0][key], true);
                         }
