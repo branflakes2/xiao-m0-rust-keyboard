@@ -327,6 +327,15 @@ pub const BACKSPACE: KeyStroke = KeyStroke {
     toggle: false,
 };
 
+pub const DELETE: KeyStroke = KeyStroke {
+    modifiers: 0,
+    hid_code: hid_codes::KEY_DELETE,
+    clearable: true,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+
 pub const ESC: KeyStroke = KeyStroke {
     modifiers: 0,
     hid_code: hid_codes::KEY_ESC,
@@ -511,6 +520,7 @@ pub const LAYER2: KeyStroke = KeyStroke {
     toggle: false,
 };
 
+// Layer for games
 pub const T_LAYER3: KeyStroke = KeyStroke {
     modifiers: 0,
     hid_code: hid_codes::KEY_NONE,
@@ -817,6 +827,14 @@ pub const K9: KeyStroke = KeyStroke {
 };
 pub const BACKTICK: KeyStroke = KeyStroke {
     modifiers: 0,
+    hid_code: hid_codes::KEY_GRAVE,
+    clearable: true,
+    is_layer: false,
+    layer: 0,
+    toggle: false,
+};
+pub const TILDE: KeyStroke = KeyStroke {
+    modifiers: hid_codes::KEY_MOD_LSHIFT,
     hid_code: hid_codes::KEY_GRAVE,
     clearable: true,
     is_layer: false,
