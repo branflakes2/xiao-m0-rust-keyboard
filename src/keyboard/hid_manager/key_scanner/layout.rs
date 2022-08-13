@@ -102,7 +102,7 @@ mod unformatted {
             [
                 [keys::TILDE, keys::K1, keys::K2, keys::K3, keys::K4, keys::K5, keys::NONE, keys::NONE], 
                 [keys::DELETE, keys::EXCLAMATION, keys::QUESTION, keys::LPAREN, keys::RPAREN, keys::ASTERISK, keys::NONE, keys::NONE], 
-                [keys::LSHIFT, keys::ATSIGN, keys::POUND, keys::AND, keys::DOLLAR, keys::PERCENT, keys::NONE, keys::NONE], 
+                [keys::LSHIFT, keys::ATSIGN, keys::POUND, keys::DOLLAR, keys::AND, keys::PERCENT, keys::NONE, keys::NONE], 
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::LALT, keys::NONE, keys::NONE, keys::NONE], 
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
