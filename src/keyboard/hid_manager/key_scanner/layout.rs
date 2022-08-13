@@ -125,12 +125,12 @@ mod unformatted {
         [
             // Left Section
             [
-                [keys::A, keys::K1, keys::K2, keys::K3, keys::K4, keys::K5, keys::NONE, keys::NONE], 
-                [keys::DELETE, keys::EXCLAMATION, keys::QUESTION, keys::LPAREN, keys::RPAREN, keys::ASTERISK, keys::NONE, keys::NONE], 
-                [keys::LSHIFT, keys::ATSIGN, keys::POUND, keys::AND, keys::DOLLAR, keys::PERCENT, keys::NONE, keys::NONE], 
-                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::LAYER1, keys::NONE, keys::NONE, keys::NONE], 
-                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
-                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
+                [keys::K1, keys::ESC, keys::Q, keys::W, keys::E, keys::R, keys::NONE, keys::NONE], 
+                [keys::K2, keys::LCTRL, keys::A, keys::S, keys::D, keys::F, keys::NONE, keys::NONE], 
+                [keys::K3, keys::LSHIFT, keys::Z, keys::X, keys::C, keys::V, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::K4, keys::K5, keys::K6, keys::SPACE, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::G, keys::T, keys::NONE, keys::NONE], 
+                [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::LAYER1, keys::Y, keys::NONE, keys::NONE], 
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE], 
             ],
