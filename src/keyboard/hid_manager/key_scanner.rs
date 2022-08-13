@@ -27,7 +27,11 @@ impl KeyTracker {
             self.pressed_keys[section][row][col] = key;
             if key.is_layer {
                 if key.toggle {
-                    self.default_layer = key.layer;
+                    if self.default_layer == key.layer {
+                        self.default_layer = 0;
+                    } else {
+                        self.default_layer = key.layer;
+                    }
                 } else {
                     self.current_layer = key.layer;
                     self.pressed_layers.rotate_right(1);
