@@ -455,7 +455,7 @@ pub const END: KeyStroke = KeyStroke {
 
 pub const HOME: KeyStroke = KeyStroke {
     modifiers: 0,
-    hid_code: hid_codes::KEY_END,
+    hid_code: hid_codes::KEY_HOME,
     clearable: true,
     is_layer: false,
     layer: 0,
