@@ -65,7 +65,7 @@ mod unformatted {
                 [keys::D, keys::H, keys::T, keys::N, keys::S, keys::FSLASH, keys::NONE, keys::NONE],
                 [keys::B, keys::M, keys::W, keys::V, keys::Z, keys::ENTER, keys::NONE, keys::NONE],
                 [keys::SPACE, keys::LAYER2, keys::DOWN, keys::UP, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
-                [keys::PGUP, keys::PGDN, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
+                [keys::PGDN, keys::PGUP, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
                 [keys::HOME, keys::END, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
                 [keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE, keys::NONE],
