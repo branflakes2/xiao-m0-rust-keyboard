@@ -51,11 +51,17 @@ impl HidManager {
     pub fn press_modifier(&mut self, m: u8, clearable: bool) -> bool {
         let old_m = self.modifier;
         self.clearable_modifier = 0;
+        // if the modifier is marked as clearable
         if clearable {
-            self.clearable_modifier = m;
+            // and modifier is not already pressed
+            if self.modifier & m == 0 {
+                self.clearable_modifier = m;
+            }
         } else {
             self.modifier |= m;
         }
+
+        // report whether the modifier changed
         if self.modifier != old_m {
             return true;
         } else {
@@ -63,8 +69,11 @@ impl HidManager {
         }
     }
 
-    pub fn release_modifier(&mut self, m: u8) {
-        self.modifier &= !m;
+    pub fn release_modifier(&mut self, m: u8, clearable: bool) {
+        // only release clearable modifiers if it's not already pressed somewhere else
+        if !clearable || self.modifier & m == 0 {
+            self.modifier &= !m;
+        }
         self.clearable_modifier = 0;
     }
 
@@ -105,7 +114,7 @@ impl HidManager {
             self.press_modifier(key.modifiers, key.clearable);
         } else {
             self.release_key(key.hid_code);
-            self.release_modifier(key.modifiers);
+            self.release_modifier(key.modifiers, key.clearable);
         }
     }
 }
