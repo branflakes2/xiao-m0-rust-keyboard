@@ -1,6 +1,6 @@
 pub mod keys;
 
-use keys::KeyStroke;
+use keys::KeyPress;
 
 // Number of physical sections of the keyboard, polled via i2c
 pub const N_SECTIONS: usize = 2;
@@ -12,7 +12,7 @@ pub const SECTION_COLS: usize = 8;
 // I2C addresses of each section
 pub const SECTION_I2C_ADDRESSES: [u8; N_SECTIONS] = [0x26, 0x27];
 
-pub type Layer = [[[KeyStroke; SECTION_COLS]; SECTION_ROWS]; N_SECTIONS];
+pub type Layer<'a> = [[[KeyPress<'a>; SECTION_COLS]; SECTION_ROWS]; N_SECTIONS];
 pub type Column = u8; // set this depending on the size that's read from
                       // io expander
 
@@ -151,7 +151,7 @@ mod unformatted {
 
 pub use unformatted::*;
 
-pub fn get_key(layer: usize, section: usize, col: usize, row: usize) -> KeyStroke {
+pub fn get_key(layer: usize, section: usize, col: usize, row: usize) -> KeyPress<'static> {
     let mapped_stroke: [usize; 2] = LAYOUT_MAP[section][row][col];
     return LAYOUT[layer][section][mapped_stroke[0]][mapped_stroke[1]];
 }
