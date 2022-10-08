@@ -4,6 +4,21 @@ use self::hid_codes::KEY_MOD_LSHIFT;
 
 mod hid_codes;
 
+pub enum KeyPress<'a> {
+    Macro(&'a [MacroGroup<'a>]),
+    Single(KeyStroke),
+}
+
+pub struct MacroGroup<'a> {
+    pub delay_ms: u16,
+    pub keystrokes: &'a [KeyStroke],
+}
+
+pub struct MacroPress {
+    delay_ms: u16,
+    stroke: KeyStroke,
+}
+
 ///Defines what happens when a key is pressed. Keys which are used to switch layers must have
 ///is_layer set to true. Keys with is_layer == true will ignore modifiers and hid_code.
 ///
