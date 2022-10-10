@@ -4,27 +4,99 @@ use self::hid_codes::KEY_MOD_LSHIFT;
 
 mod hid_codes;
 
+pub type Macro<'a> = &'a [MacroGroup<'a>];
+
 #[derive(Copy, Clone)]
 pub enum KeyPress<'a> {
-    Macro(&'a [MacroGroup<'a>]),
+    Macro(Macro<'a>),
     Single(KeyStroke),
     Layer(Layer),
 }
 
-pub struct MacroGroup<'a> {
-    pub delay_ms: u16,
-    pub keystrokes: &'a [KeyStroke],
+impl<'a> EqKeyPress for KeyPress<'a> {
+    fn eq(&self, other: &KeyPress) -> bool {
+        match other {
+            KeyPress::Macro(other) => other.eq(self),
+            KeyPress::Single(other) => other.eq(self),
+            KeyPress::Layer(other) => other.eq(self),
+        }
+    }
 }
 
+#[derive(Copy, Clone)]
+pub struct MacroGroup<'a> {
+    pub delay_ms: u16,
+    pub keystrokes: &'a [MacroPress],
+}
+
+impl<'a> EqKeyPress for Macro<'a> {
+    fn eq(&self, other: &KeyPress) -> bool {
+        match other {
+            KeyPress::Macro(other) => {
+                if self.len() != other.len() {
+                    return false;
+                }
+                for i in 0..other.len() {
+                    if !self[i]._eq(&other[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            _ => false,
+        }
+    }
+}
+
+impl<'a> MacroGroup<'a> {
+    fn _eq(self, other: &MacroGroup) -> bool {
+        if self.keystrokes.len() != other.keystrokes.len() || self.delay_ms != other.delay_ms {
+            return false;
+        }
+        for i in 0..self.keystrokes.len() {
+            if !self.keystrokes[i]._eq(&other.keystrokes[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+#[derive(Copy, Clone)]
 pub struct MacroPress {
-    delay_ms: u16,
-    stroke: KeyStroke,
+    pub delay_ms: u16,
+    pub stroke: KeyStroke,
+}
+
+impl MacroPress {
+    fn _eq(&self, other: &MacroPress) -> bool {
+        self.stroke._eq(&other.stroke) && self.delay_ms == other.delay_ms
+    }
 }
 
 #[derive(Copy, Clone)]
 pub struct Layer {
     pub layer: usize,
     pub toggle: bool,
+}
+
+impl EqKeyPress for Layer {
+    fn eq(&self, other: &KeyPress) -> bool {
+        match other {
+            KeyPress::Layer(other) => self._eq(other),
+            _ => false,
+        }
+    }
+}
+
+impl Layer {
+    fn _eq(&self, other: &Layer) -> bool {
+        self.layer == other.layer && self.toggle == other.toggle
+    }
+}
+
+pub trait EqKeyPress {
+    fn eq(&self, other: &KeyPress) -> bool;
 }
 
 ///Defines what happens when a key is pressed. Keys which are used to switch layers must have
@@ -40,27 +112,24 @@ pub struct KeyStroke {
     pub clearable: bool,
 }
 
+impl EqKeyPress for KeyStroke {
+    fn eq(&self, other: &KeyPress) -> bool {
+        match other {
+            KeyPress::Single(s) => self._eq(s),
+            _ => false,
+        }
+    }
+}
+
 impl KeyStroke {
-    pub fn layer(layer: usize) -> Self {
-        return KeyStroke {
-            modifiers: 0,
-            hid_code: hid_codes::KEY_NONE,
-            clearable: true,
-        };
-    }
-
-    pub fn t_layer(layer: usize) -> Self {
-        return KeyStroke {
-            modifiers: 0,
-            hid_code: hid_codes::KEY_NONE,
-            clearable: true,
-        };
-    }
-
-    pub fn eq(self, other: KeyStroke) -> bool {
-        return self.modifiers == other.modifiers
+    fn _eq(&self, other: &KeyStroke) -> bool {
+        self.modifiers == other.modifiers
             && self.hid_code == other.hid_code
-            && self.clearable == other.clearable;
+            && self.clearable == other.clearable
+    }
+
+    pub fn is_none(self) -> bool {
+        self.modifiers == 0 && self.hid_code == 0
     }
 }
 

@@ -7,8 +7,9 @@ version = "0.1.0"
 
 [dependencies]
 atsamd-hal = "0.14"
+embedded-hal = "0.2.7"
 xiao_m0 = "0.12.0"
-cortex-m = "0.7"
+cortex-m = "0.7.6"
 cortex-m-rt = "0.7.1"
 cortex-m-semihosting = "0.3.3"
 panic-halt = "0.2.0"

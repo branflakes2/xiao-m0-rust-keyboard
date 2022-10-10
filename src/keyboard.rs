@@ -1,8 +1,13 @@
 pub mod hid_manager;
 
 use atsamd_hal::prelude::_atsamd_hal_embedded_hal_digital_v2_ToggleableOutputPin;
+use embedded_hal::blocking::delay::DelayMs;
 use hid_manager::key_scanner::{
-    layout::{self, Column},
+    layout::{
+        self,
+        keys::{KeyPress, Macro},
+        Column,
+    },
     KeyTracker,
 };
 use hid_manager::HidManager;
@@ -18,21 +23,23 @@ pub trait ReportSender {
 }
 
 pub struct Keyboard<'a> {
-    hid: &'a mut HidManager,
-    tracker: &'a mut KeyTracker,
+    hid: HidManager,
+    tracker: KeyTracker<'a>,
     reader: &'a mut dyn ColumnReader,
     sender: &'a dyn ReportSender,
     led0: Led0,
+    delay: &'a mut dyn DelayMs<u16>,
     _disabled_sections: [bool; layout::N_SECTIONS],
 }
 
 impl<'a> Keyboard<'a> {
     pub fn new(
-        hid: &'a mut HidManager,
-        tracker: &'a mut KeyTracker,
+        hid: HidManager,
+        tracker: KeyTracker<'a>,
         reader: &'a mut impl ColumnReader,
         sender: &'a impl ReportSender,
         led0: Led0,
+        delay: &'a mut impl DelayMs<u16>,
     ) -> Self {
         let mut _disabled_sections: [bool; layout::N_SECTIONS] = [false; layout::N_SECTIONS];
         for section in 0..layout::N_SECTIONS {
@@ -47,11 +54,47 @@ impl<'a> Keyboard<'a> {
             reader,
             sender,
             led0,
+            delay,
             _disabled_sections,
         };
     }
 
-    pub fn run_forever(&mut self) -> ! {
+    fn _process_macro(&mut self, m: Macro) {
+        self.hid.clear();
+        self.report();
+        for i in 0..m.len() {
+            for j in 0..m[i].keystrokes.len() {
+                self.hid.process_key(m[i].keystrokes[j].stroke, true);
+                self.report();
+                self.delay.delay_ms(m[i].keystrokes[j].delay_ms);
+            }
+            self.hid.clear();
+            self.report();
+            self.delay.delay_ms(m[i].delay_ms);
+        }
+    }
+
+    fn report(&mut self) {
+        let mut which_reports: u8 = 0;
+        let reports: [KeyboardReport; 2] = self.hid.report(&mut which_reports);
+        if which_reports & 1 > 0 {
+            self.sender.send_report(reports[0]);
+        }
+        if which_reports & 2 > 0 {
+            self.sender.send_report(reports[1]);
+        }
+    }
+
+    fn _process_key(&mut self, key: &KeyPress, down: bool) {
+        match key {
+            KeyPress::Macro(m) => self._process_macro(m),
+            KeyPress::Single(k) => self.hid.process_key(*k, down),
+            _ => return,
+            // do nothing for layers, they shouldn't even make it up here
+        }
+    }
+
+    pub fn run_forever(mut self) -> ! {
         loop {
             for i in 0..100 {
                 if i == 0 {
@@ -69,12 +112,12 @@ impl<'a> Keyboard<'a> {
                         let strokes = self.tracker.process_column(section, c.unwrap(), column);
                         // press keys
                         for key in 0..strokes[0].len() {
-                            self.hid.process_key(strokes[0][key], true);
+                            self._process_key(&strokes[0][key], true);
                         }
 
                         // release keys
                         for key in 0..strokes[1].len() {
-                            self.hid.process_key(strokes[1][key], false);
+                            self._process_key(&strokes[1][key], false);
                         }
 
                         let mut which_reports: u8 = 0;

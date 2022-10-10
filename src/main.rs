@@ -4,7 +4,10 @@
 extern crate panic_halt;
 mod keyboard;
 
-use cortex_m::{asm::delay, interrupt::free as disable_interrupts, peripheral::NVIC};
+use cortex_m::{
+    asm::delay, delay::Delay, interrupt::free as disable_interrupts, peripheral::NVIC,
+    Peripherals as M0Peripherals,
+};
 use hal::{clock::GenericClockController, prelude::*, time::KiloHertz, usb::UsbBus};
 use pac::{interrupt, CorePeripherals, Peripherals};
 use shared_bus;
@@ -97,6 +100,7 @@ impl<
 
 #[entry]
 fn main() -> ! {
+    let m0_peripherals = M0Peripherals::take().unwrap();
     let mut peripherals = Peripherals::take().unwrap();
     let mut core = CorePeripherals::take().unwrap();
     let mut clocks = GenericClockController::with_internal_32kosc(
@@ -132,9 +136,10 @@ fn main() -> ! {
     }
     let mut reader = XiaoM0ColumnReader { i2c_bus, is_setup };
     let sender = XiaoM0Sender {};
-    let mut tracker = KeyTracker::new();
-    let mut hid_manage = HidManager::new();
-    let mut keyboard = Keyboard::new(&mut hid_manage, &mut tracker, &mut reader, &sender, led0);
+    let tracker = KeyTracker::new();
+    let hid_manage = HidManager::new();
+    let mut d = Delay::new(m0_peripherals.SYST, 48_000_000);
+    let keyboard = Keyboard::new(hid_manage, tracker, &mut reader, &sender, led0, &mut d);
     let hid_settings = HidClassSettings {
         subclass: HidSubClass::NoSubClass,
         protocol: HidProtocol::Generic,

@@ -22,6 +22,14 @@ impl HidManager {
         };
     }
 
+    pub fn clear(&mut self) {
+        self.keys = [0; 6];
+        self._old_keys = [0; 6];
+        self.modifier = 0;
+        self._old_modifier = 0;
+        self.clearable_modifier = 0;
+    }
+
     pub fn press_key(&mut self, key: u8) {
         if key == 0x00 {
             return;
@@ -106,7 +114,7 @@ impl HidManager {
     }
 
     pub fn process_key(&mut self, key: keys::KeyStroke, down: bool) {
-        if key.is_layer || key.eq(keys::NONE) {
+        if key.is_none() {
             return;
         }
         if down {
