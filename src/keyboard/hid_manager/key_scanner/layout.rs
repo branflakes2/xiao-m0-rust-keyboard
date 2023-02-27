@@ -12,6 +12,7 @@ pub const SECTION_COLS: usize = 8;
 // I2C addresses of each section
 pub const SECTION_I2C_ADDRESSES: [u8; N_SECTIONS] = [0x26, 0x27];
 
+pub type DebounceLayer = [[[usize; SECTION_COLS]; SECTION_ROWS]; N_SECTIONS];
 pub type Layer = [[[KeyStroke; SECTION_COLS]; SECTION_ROWS]; N_SECTIONS];
 pub type Column = u8; // set this depending on the size that's read from
                       // io expander

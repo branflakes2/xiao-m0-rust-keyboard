@@ -35,6 +35,8 @@ use xiao_m0 as bsp;
 
 struct XiaoM0Sender {}
 
+pub const DEBOUNCE_SENSE: usize = 3;
+
 impl ReportSender for XiaoM0Sender {
     fn send_report(&self, report: KeyboardReport) {
         disable_interrupts(|_| unsafe {
@@ -132,7 +134,7 @@ fn main() -> ! {
     }
     let mut reader = XiaoM0ColumnReader { i2c_bus, is_setup };
     let sender = XiaoM0Sender {};
-    let mut tracker = KeyTracker::new();
+    let mut tracker = KeyTracker::new(DEBOUNCE_SENSE);
     let mut hid_manage = HidManager::new();
     let mut keyboard = Keyboard::new(&mut hid_manage, &mut tracker, &mut reader, &sender, led0);
     let hid_settings = HidClassSettings {

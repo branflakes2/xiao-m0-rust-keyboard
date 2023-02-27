@@ -1,19 +1,24 @@
 pub mod layout;
 
-use layout::{keys, Layer};
+use layout::{keys, DebounceLayer, Layer};
 
 pub struct KeyTracker {
+    debounce_tracker: DebounceLayer,
     pressed_keys: Layer,
+    debounce_sense: usize,
     current_layer: usize,
     default_layer: usize,
     pressed_layers: [usize; layout::LAYOUT.len()],
 }
 
 impl KeyTracker {
-    pub fn new() -> Self {
+    pub fn new(debounce_sense: usize) -> Self {
         return KeyTracker {
+            debounce_tracker: [[[0; layout::SECTION_COLS]; layout::SECTION_ROWS];
+                layout::N_SECTIONS],
             pressed_keys: [[[keys::NONE; layout::SECTION_COLS]; layout::SECTION_ROWS];
                 layout::N_SECTIONS],
+            debounce_sense,
             current_layer: 0,
             default_layer: 0,
             pressed_layers: [0xFF; layout::LAYOUT.len()],
@@ -87,10 +92,14 @@ impl KeyTracker {
         for row in 0..layout::SECTION_ROWS {
             if (0x1 << row) & column > 0 {
                 if self.pressed_keys[section][row][column_number].eq(keys::NONE) {
-                    hids[0][row] = self._press_key(section, column_number, row);
+                    self.debounce_tracker[section][row][column_number] += 1;
+                    if self.debounce_tracker[section][row][column_number] == self.debounce_sense {
+                        hids[0][row] = self._press_key(section, column_number, row);
+                    }
                 }
             } else {
                 if !self.pressed_keys[section][row][column_number].eq(keys::NONE) {
+                    self.debounce_tracker[section][row][column_number] = 0;
                     hids[1][row] = self._release_key(section, column_number, row)
                 }
             }
