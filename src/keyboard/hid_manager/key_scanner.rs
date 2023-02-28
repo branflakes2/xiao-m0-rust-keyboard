@@ -98,8 +98,8 @@ impl KeyTracker {
                     }
                 }
             } else {
+                self.debounce_tracker[section][row][column_number] = 0;
                 if !self.pressed_keys[section][row][column_number].eq(keys::NONE) {
-                    self.debounce_tracker[section][row][column_number] = 0;
                     hids[1][row] = self._release_key(section, column_number, row)
                 }
             }
